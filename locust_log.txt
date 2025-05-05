@@ -1,0 +1,8 @@
+[2025-05-05 10:33:45,646] DESKTOP-5T5F9P1/INFO/locust.main: Starting Locust 2.36.2 (locust-cloud 1.20.7)
+[2025-05-05 10:33:45,647] DESKTOP-5T5F9P1/INFO/locust.main: Starting web interface at http://localhost:8089, press enter to open your default browser.
+[2025-05-05 10:35:55,763] DESKTOP-5T5F9P1/INFO/locust.main: Shutting down (exit code 0)
+[2025-05-05 10:36:06,935] DESKTOP-5T5F9P1/INFO/locust.main: Starting Locust 2.36.2 (locust-cloud 1.20.7)
+[2025-05-05 10:36:06,936] DESKTOP-5T5F9P1/INFO/locust.main: Starting web interface at http://localhost:8089, press enter to open your default browser.
+[2025-05-05 10:36:30,171] DESKTOP-5T5F9P1/INFO/locust.runners: Ramping to 1000 users at a rate of 20.00 per second
+[2025-05-05 10:37:19,455] DESKTOP-5T5F9P1/INFO/locust.runners: All users spawned: {"DRFUser": 1000} (1000 total users)
+[2025-05-05 10:40:05,972] DESKTOP-5T5F9P1/INFO/locust.main: Shutting down (exit code 0)
