@@ -4,6 +4,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Product
 from .serializers import ProductSerializer
+from rest_framework import viewsets
+from .models import Blog
+from .serializers import BlogSerializer
+from rest_framework.permissions import AllowAny
 
 class ProductListView(APIView):
     def get(self, request):
@@ -12,10 +16,7 @@ class ProductListView(APIView):
         return Response(serializer.data)
 
 
-from rest_framework import viewsets
-from .models import Blog
-from .serializers import BlogSerializer
-from rest_framework.permissions import AllowAny
+
 
 class BlogViewSet(APIView):
     permission_classes = [AllowAny]
