@@ -20,7 +20,7 @@ for model in app_models:
         search_fields = [field.name for field in model._meta.fields if field.__class__.__name__ == 'CharField']  # কেবল string ফিল্ডের জন্য সার্চ
         list_filter = [field.name for field in model._meta.fields if field.__class__.__name__ == 'BooleanField']
         ordering = [field.name for field in model._meta.fields if field.__class__.__name__ == 'DateTimeField']
-        prepopulated_fields = {"slug": ("name",)}
+        # prepopulated_fields = {"slug": ("name",)}
         
     try:
         admin.site.register(model, DynamicAdmin)
