@@ -45,52 +45,73 @@ from django.db.migrations.loader import MigrationLoader
 from django.db import connection
 
 class Command(BaseCommand):
-    help = 'Restore last migration file from backup and apply migration (with dependencies)'
+    help = 'Restore last migration file from backup and apply migration (even if no migration exists)'
 
     def add_arguments(self, parser):
         parser.add_argument('app_name', type=str, help='App name to restore migration')
 
     def handle(self, *args, **kwargs):
         app_name = kwargs['app_name']
-        loader = MigrationLoader(connection)
-        graph = loader.graph
 
         try:
-            rollback_plan = graph.forwards_plan((app_name, graph.leaf_nodes(app_name)[-1]))
-        except IndexError:
-            rollback_plan = []
+            loader = MigrationLoader(connection, ignore_no_migrations=True)
+            graph = loader.graph
 
-        # Reverse order for restoring
-        rollback_apps = []
-        for app_label, _ in rollback_plan:
-            if app_label not in rollback_apps:
-                rollback_apps.append(app_label)
-        rollback_apps = rollback_apps[::-1]
+            leaf_nodes = graph.leaf_nodes(app_name)
+            rollback_apps = []
 
-        # Always include the requested app first if no dependency found
-        if app_name not in rollback_apps:
-            rollback_apps.insert(0, app_name)
+            if leaf_nodes:
+                target_node = leaf_nodes[-1]
+                rollback_plan = graph.forwards_plan(target_node)
+
+                for app_label, _ in rollback_plan:
+                    if app_label not in rollback_apps:
+                        rollback_apps.append(app_label)
+
+                rollback_apps = rollback_apps[::-1]
+
+            # Ensure the requested app is included
+            if app_name not in rollback_apps:
+                rollback_apps.insert(0, app_name)
+
+        except Exception as e:
+            self.stdout.write(self.style.ERROR(f"[{app_name}] Failed to load migration graph: {e}"))
+            rollback_apps = [app_name]  # Fallback to only the target app
 
         for app in rollback_apps:
-            migration_path = Path(f"{app}/migrations")
-            backup_path = migration_path / "backups"
+            try:
+                migration_path = Path(f"{app}/migrations")
+                backup_path = migration_path / "backups"
 
-            if not backup_path.exists():
-                self.stdout.write(self.style.WARNING(f"[{app}] No backup folder found. Skipping."))
-                continue
+                if not backup_path.exists():
+                    self.stdout.write(self.style.WARNING(f"[{app}] No backup folder found. Skipping."))
+                    continue
 
-            backup_files = sorted(backup_path.glob("*.py"))
-            if not backup_files:
-                self.stdout.write(self.style.WARNING(f"[{app}] No backup files found."))
-                continue
+                backup_files = sorted(backup_path.glob("*.py"))
+                if not backup_files:
+                    self.stdout.write(self.style.WARNING(f"[{app}] No backup files found. Skipping."))
+                    continue
 
-            latest_backup = backup_files[-1]
-            destination = migration_path / latest_backup.name
+                latest_backup = backup_files[-1]
+                destination = migration_path / latest_backup.name
 
-            # Step 1: Copy back to migrations
-            shutil.copy(latest_backup, destination)
-            self.stdout.write(self.style.SUCCESS(f"[{app}] Restored: {latest_backup.name}"))
+                # Step 1: Restore backup file
+                shutil.copy(latest_backup, destination)
+                self.stdout.write(self.style.SUCCESS(f"[{app}] Restored: {latest_backup.name}"))
 
-            # Step 2: Run migrate
-            call_command("migrate", app)
-            self.stdout.write(self.style.SUCCESS(f"[{app}] Migration applied."))
+                # Step 2: Apply migration
+                try:
+                    call_command("makemigrations", app)
+                except Exception as mk_err:
+                    self.stdout.write(self.style.WARNING(f"[{app}] makemigrations skipped or failed: {mk_err}"))
+
+                try:
+                    call_command("migrate", app)
+                    self.stdout.write(self.style.SUCCESS(f"[{app}] Migration applied successfully."))
+                except Exception as migrate_err:
+                    self.stdout.write(self.style.ERROR(f"[{app}] Migration failed: {migrate_err}"))
+
+            except Exception as file_err:
+                self.stdout.write(self.style.ERROR(f"[{app}] Unexpected error during restoration: {file_err}"))
+
+        self.stdout.write(self.style.SUCCESS("Restoration completed."))

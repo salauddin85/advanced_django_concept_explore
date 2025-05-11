@@ -50,11 +50,13 @@ class Management(models.Model):
     contact_number = models.CharField(max_length=12)
     email = models.EmailField()
     
+    
 class Coach(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     contact_number = models.CharField(max_length=12)
     email = models.EmailField()
     specialization = models.CharField(max_length=50)
+    country = models.CharField(max_length=50,default='')
     
 class Staff(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
