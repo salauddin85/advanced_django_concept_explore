@@ -19,7 +19,7 @@ class Command(BaseCommand):
             self.stdout.write(self.style.ERROR(f"No migrations folder found for app: {app_name}"))
             return
 
-        # init.py বাদ দিয়ে সব migration
+        # init.py without file in migration
         migration_files = sorted([
             f for f in migration_path.glob('*.py') if f.name != '__init__.py'
         ])
@@ -28,26 +28,26 @@ class Command(BaseCommand):
             self.stdout.write(self.style.WARNING("No migration files found."))
             return
 
-        # শেষ ফাইল
+        # last migration file
         last_migration_file = migration_files[-1]
         last_migration_name = last_migration_file.stem
 
-        # ✅ Step 1: BACKUP
+        # Step 1: BACKUP
         backup_path.mkdir(exist_ok=True)
         shutil.copy(last_migration_file, backup_path / last_migration_file.name)
         self.stdout.write(self.style.NOTICE(f"Backup created at: {backup_path/last_migration_file.name}"))
 
-        # ✅ Step 2: Reverse migration
+        # Step 2: Reverse migration
         from django.core.management import call_command
         revert_to = migration_files[-2].stem.split('_')[0] if len(migration_files) > 1 else 'zero'
         call_command("migrate", app_name, revert_to)
         self.stdout.write(self.style.SUCCESS(f"Rolled back to: {revert_to}"))
 
-        # ✅ Step 3: Delete the file
+        # Step 3: Delete the file
         os.remove(last_migration_file)
         self.stdout.write(self.style.SUCCESS(f"Deleted migration file: {last_migration_file.name}"))
 
-        # ✅ Step 4: Remove from DB
+        #  Step 4: Remove from DB
         with connection.cursor() as cursor:
             cursor.execute(
                 "DELETE FROM django_migrations WHERE app = %s AND name = %s",

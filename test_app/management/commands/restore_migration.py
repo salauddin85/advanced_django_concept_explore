@@ -26,10 +26,10 @@ class Command(BaseCommand):
         latest_backup = backup_files[-1]
         destination = migration_path / latest_backup.name
 
-        # ✅ Step 1: Copy back to migrations
+        # Step 1: Copy back to migrations
         shutil.copy(latest_backup, destination)
         self.stdout.write(self.style.SUCCESS(f"Restored: {latest_backup.name} to {destination}"))
 
-        # ✅ Step 2: Run migrate
+        # Step 2: Run migrate
         call_command("migrate", app_name)
         self.stdout.write(self.style.SUCCESS("Migration applied successfully."))
