@@ -5,8 +5,9 @@ from rest_framework.response import Response
 from .models import Product
 from .serializers import ProductSerializer
 from rest_framework import viewsets
-from .models import Blog
-from .serializers import BlogSerializer
+from .models import *
+
+from .serializers import *
 from rest_framework.permissions import AllowAny
 
 class ProductListView(APIView):
@@ -26,17 +27,18 @@ class BlogViewSet(APIView):
         return Response(serializer.data)
     
 
+# ami dekte chai oii user ta kun team kun management ,kun coach ar under a 
 
-
-# output:
-[
-    {
-        "id": 1,
-        "name": "SHIRT"
-    },
-    {
-        "id": 3,
-        "name": "PANTS"
-    }
-]
-# Salauddin
+class TeamView(APIView):
+    def get(self,request,user_id):
+        try:
+            user = User.objects.get(pk = user_id)
+            overall_info = Team.objects.filter(user = user)
+            print(overall_info)
+            print(overall_info.query)
+            serializer = TeamSerializer(overall_info,many = True)
+            return Response(serializer.data)
+        except User.DoesNotExist:
+            return Response("User Does not exist")
+        except Exception as e:
+            return Response(str(e))
