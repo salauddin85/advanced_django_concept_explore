@@ -148,3 +148,5 @@ class Command(BaseCommand):
 
             except Exception as e:
                 self.stdout.write(self.style.ERROR(f"[{app}] Error: {str(e)}"))
+
+        self.stdout.write(self.style.SUCCESS("Rollback completed."))
