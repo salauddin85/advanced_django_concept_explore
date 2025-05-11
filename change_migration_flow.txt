@@ -1,0 +1,22 @@
+Start
+  │
+  ├──▶ 1. App Name Input (CLI থেকে app_name নেয়া হয়)
+  │
+  ├──▶ 2. Check: migrations/ ফোল্ডার আছে কি না?
+  │       └── ✘ না → "No migrations folder" → Stop
+  │
+  ├──▶ 3. Get last migration file (excluding __init__.py)
+  │       └── ✘ না → "No migration files" → Stop
+  │
+  ├──▶ 4. Create backups/ folder (if not exists)
+  │
+  ├──▶ 5. Copy last migration → backups/ এ ব্যাকআপ
+  │
+  ├──▶ 6. Django migration graph থেকে dependency সহ অ্যাপ ও মাইগ্রেশন খোঁজা
+  │
+  ├──▶ 7. For each dependent app:
+  │       ├── Revert migrate → আগের মাইগ্রেশনে ফেরা
+  │       ├── Delete last migration file
+  │       └── Remove entry from django_migrations table
+  │
+  └──▶ Done (Rollback successful with backup)

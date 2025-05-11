@@ -1,0 +1,32 @@
+Start
+  │
+  ├──▶ 1. App Name Input (CLI থেকে app_name নেয়া হয়)
+  │
+  ├──▶ 2. Check: backups/ ফোল্ডার আছে?
+  │       └── ✘ না → "No backup folder" → Stop
+  │
+  ├──▶ 3. Get latest .py backup file
+  │       └── ✘ না → "No backup files found" → Stop
+  │
+  ├──▶ 4. Copy latest backup → migrations/ ফোল্ডারে বসানো
+  │
+  ├──▶ 5. call_command("migrate", app_name)
+  │       └── Django আবার মাইগ্রেশন চালায়
+  │
+  └──▶ Done (Restored and migrated successfully)
+
+
+
+ধরা যাক আপনার ৩টা অ্যাপ:
+
+app2 depends on app6
+
+app6 depends on app3
+----------------------------
+Rollback Plan (with dependency):
+app3 → app6 → app2
+
+1. Backup all last migration files
+2. Revert migration: app2, app6, app3 (in that order)
+3. Delete their last migration files
+4. Remove from django_migrations
