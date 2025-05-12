@@ -81,6 +81,7 @@ class Command(BaseCommand):
         try:
             loader = MigrationLoader(connection)
             graph = loader.graph
+            print(graph)
 
             leaf_nodes = graph.leaf_nodes(app_name)
             if not leaf_nodes:
