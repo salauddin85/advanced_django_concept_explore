@@ -17,3 +17,14 @@ class Event(models.Model):
 
     def __str__(self):
         return self.name
+
+from django_currentuser.db.models import CurrentUserField
+# from django_currentuser.middleware import (
+#     get_current_user, get_current_authenticated_user
+# )
+
+class Order(models.Model):
+    created_by = CurrentUserField()
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField()
+    total_price = models.DecimalField(max_digits=10, decimal_places=2)
