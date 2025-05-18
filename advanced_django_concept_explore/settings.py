@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'test_app',
     'event',
     # 'rest_framework',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
