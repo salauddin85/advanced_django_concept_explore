@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'event',
     # 'rest_framework',
     'django_extensions',
+    'django_currentuser',
 ]
 
 MIDDLEWARE = [
@@ -51,6 +52,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_currentuser.middleware.ThreadLocalUserMiddleware',
 ]
 
 ROOT_URLCONF = 'advanced_django_concept_explore.urls'
