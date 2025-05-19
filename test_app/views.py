@@ -6,7 +6,7 @@ from .models import Product
 from .serializers import ProductSerializer
 from rest_framework import viewsets
 from .models import *
-
+from django.db import connection
 from .serializers import *
 from rest_framework.permissions import AllowAny
 
@@ -20,14 +20,24 @@ class ProductListView(APIView):
 
 
 class BlogViewSet(APIView):
-    permission_classes = [AllowAny]
+    # permission_classes = [AllowAny]
     def get(self, request):
-        blogs = Blog.objects.all()
+        # blogs = Blog.objects.all()
+        # print(blogs.query)
+        # for blog in blogs:
+        #     print(blog.author)
+        
+        blogs = list(Blog.objects.iterator())  # ইখানে list বানিয়ে রাখলে iterator শেষ হয়ে গেলেও data থাকবে
+        print(blogs.query)
+        # for blog in blogs:
+            # print(blog.author)
+        # for query in connection.queries:
+        #      print(query["sql"])
         serializer = BlogSerializer(blogs, many=True)
         return Response(serializer.data)
-    
 
-# ami dekte chai oii user ta kun team kun management ,kun coach ar under a 
+
+# ami dekte chai oii user ta kun team kun management ,kun coach ar under a
 
 class TeamView(APIView):
     def get(self,request,user_id):
