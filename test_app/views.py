@@ -27,7 +27,7 @@ class BlogViewSet(APIView):
         # for blog in blogs:
         #     print(blog.author)
         
-        blogs = list(Blog.objects.iterator())  # ইখানে list বানিয়ে রাখলে iterator শেষ হয়ে গেলেও data থাকবে
+        blogs = list(Blog.objects.iterator()) 
         print(blogs.query)
         # for blog in blogs:
             # print(blog.author)
