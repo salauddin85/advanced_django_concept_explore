@@ -28,8 +28,8 @@ class BlogViewSet(APIView):
         #     print(blog.author)
         
         # blogs = list(Blog.objects.iterator())
-        print(blogs.explain()) 
-        print(blogs.query)
+        # print(blogs.explain()) 
+        # print(blogs.query)
         # for blog in blogs:
             # print(blog.author)
         # for query in connection.queries:
