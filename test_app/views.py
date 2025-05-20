@@ -22,12 +22,13 @@ class ProductListView(APIView):
 class BlogViewSet(APIView):
     # permission_classes = [AllowAny]
     def get(self, request):
-        # blogs = Blog.objects.all()
+        blogs = Blog.objects.all()
         # print(blogs.query)
         # for blog in blogs:
         #     print(blog.author)
         
-        blogs = list(Blog.objects.iterator()) 
+        # blogs = list(Blog.objects.iterator())
+        print(blogs.explain()) 
         print(blogs.query)
         # for blog in blogs:
             # print(blog.author)
@@ -44,11 +45,10 @@ class TeamView(APIView):
         try:
             user = User.objects.get(pk = user_id)
             overall_info = Team.objects.filter(user = user)
-            print(overall_info)
-            print(overall_info.query)
+           
             serializer = TeamSerializer(overall_info,many = True)
             return Response(serializer.data)
         except User.DoesNotExist:
-            return Response("User Does not exist")
+            return Response("User Does not exist") 
         except Exception as e:
             return Response(str(e))
