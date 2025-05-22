@@ -30,8 +30,6 @@ class Blog(models.Model):
         return self.title
 
 
-# Salauddin
-
 
 class Team(models.Model):
     name = models.CharField(max_length=50)
