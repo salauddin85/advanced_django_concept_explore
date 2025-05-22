@@ -38,7 +38,6 @@ class BlogViewSet(APIView):
         return Response(serializer.data)
 
 
-# ami dekte chai oii user ta kun team kun management ,kun coach ar under a
 
 class TeamView(APIView):
     def get(self,request,user_id):
