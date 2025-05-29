@@ -9,6 +9,8 @@ from .models import *
 from django.db import connection
 from .serializers import *
 from rest_framework.permissions import AllowAny
+import logging
+logger = logging.getLogger('myapp')
 
 class ProductListView(APIView):
     def get(self, request):
@@ -35,6 +37,8 @@ class BlogViewSet(APIView):
         # for query in connection.queries:
         #      print(query["sql"])
         serializer = BlogSerializer(blogs, many=True)
+        logger.info("successfully blogs data read")
+
         return Response(serializer.data)
 
 

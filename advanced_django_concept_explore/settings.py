@@ -125,6 +125,30 @@ USE_I18N = True
 
 USE_TZ = True
 
+import sentry_sdk
+
+# sentry_sdk.init(
+#     dsn="https://a1f903051a69c798f75885b9d01698f3@o4509405000892416.ingest.us.sentry.io/4509405005348864",
+#     # Add data like request headers and IP for users,
+#     # see https://docs.sentry.io/platforms/python/data-management/data-collected/ for more info
+#     send_default_pii=True,
+# )
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+from sentry_sdk.integrations.logging import LoggingIntegration
+import logging
+sentry_logging = LoggingIntegration(
+    level=logging.INFO,        # root logger level
+    event_level=logging.ERROR  # errors as Sentry events
+)
+
+sentry_sdk.init(
+    dsn="https://a1f903051a69c798f75885b9d01698f3@o4509405000892416.ingest.us.sentry.io/4509405005348864",
+    integrations=[DjangoIntegration(), sentry_logging],
+    traces_sample_rate=1.0,
+    send_default_pii=True,
+    profile_lifecycle="trace"
+)
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
