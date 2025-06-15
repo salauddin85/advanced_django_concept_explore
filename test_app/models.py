@@ -59,3 +59,12 @@ class Coach(models.Model):
 class Staff(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
     
+class Project(models.Model):
+    name = models.CharField(max_length=100)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    class Meta:
+        permissions = (
+            ("view_project", "Can view project"),
+            ("edit_project", "Can edit project"),
+        )

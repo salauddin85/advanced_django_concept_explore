@@ -26,6 +26,7 @@ SECRET_KEY = 'django-insecure-qz@h!s$ojhnxoxjzw2iw475s-$&9ck7$kc@71cw$7i2rt2$v!0
 DEBUG = True
 
 ALLOWED_HOSTS = []
+ROLEPERMISSIONS_MODULE = 'test_app.roles'
 
 
 # Application definition
@@ -42,6 +43,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_extensions',
     'django_currentuser',
+    'rolepermissions',
+    'guardian',
 ]
 
 MIDDLEWARE = [
@@ -54,7 +57,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_currentuser.middleware.ThreadLocalUserMiddleware',
 ]
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',  # default
+    'guardian.backends.ObjectPermissionBackend',  # guardian backend
+)
 
+ANONYMOUS_USER_ID = -1  # required for guardian
 ROOT_URLCONF = 'advanced_django_concept_explore.urls'
 
 TEMPLATES = [
