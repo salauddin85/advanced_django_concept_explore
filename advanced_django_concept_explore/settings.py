@@ -45,6 +45,9 @@ INSTALLED_APPS = [
     'django_currentuser',
     'rolepermissions',
     'guardian',
+    # 'debug_toolbar',
+    # 'pympler',
+    'bulk_email'
 ]
 
 MIDDLEWARE = [
@@ -55,12 +58,17 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django_currentuser.middleware.ThreadLocalUserMiddleware',
 ]
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',  # default
     'guardian.backends.ObjectPermissionBackend',  # guardian backend
 )
+# DEBUG_TOOLBAR_PANELS = [
+#     # 'debug_toolbar.panels.timer.TimerDebugPanel',
+#     'pympler.panels.MemoryPanel',
+# ]
 
 ANONYMOUS_USER_ID = -1  # required for guardian
 ROOT_URLCONF = 'advanced_django_concept_explore.urls'
@@ -167,3 +175,13 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# settings.py
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+EMAIL_HOST_USER = 'ahmedsalauddin677785@gmail.com'      # তোমার Gmail
+EMAIL_HOST_PASSWORD = 'dtpf fwek zzvd pkof'     # Gmail এর App Password (2FA ছাড়া কাজ করবে না)
