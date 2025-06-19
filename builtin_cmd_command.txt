@@ -1,0 +1,133 @@
+# Django Built-in Management Commands (Master Reference)
+
+Django provides a set of built-in management commands accessible via:
+
+```bash
+python manage.py <command>
+```
+
+Below is a master categorized reference table, including both core commands and lesser-known commands.
+
+---
+
+## ✅ 1. Project Initialization
+
+| Command               | Description                       |
+| --------------------- | --------------------------------- |
+| `startproject <name>` | Creates a new Django project.     |
+| `startapp <name>`     | Creates a new Django application. |
+
+---
+
+## ✅ 2. Development Server
+
+| Command                    | Description                                  |
+| -------------------------- | -------------------------------------------- |
+| `runserver`                | Starts development server at 127.0.0.1:8000. |
+| `runserver <port>`         | Starts server at specified port.             |
+| `runserver 0.0.0.0:<port>` | Accessible externally.                       |
+| `testserver`               | Runs server with test fixtures preloaded.    |
+
+---
+
+## ✅ 3. Database and Migrations
+
+| Command                        | Description                                            |
+| ------------------------------ | ------------------------------------------------------ |
+| `makemigrations`               | Detects changes in models and creates migration files. |
+| `migrate`                      | Applies migrations to database.                        |
+| `sqlmigrate <app> <migration>` | Shows SQL for specific migration.                      |
+| `showmigrations`               | Lists migrations and their statuses.                   |
+| `flush`                        | Deletes all data, resets sequences.                    |
+| `sqlflush`                     | Shows SQL statements executed by `flush`.              |
+| `inspectdb`                    | Generates model code based on existing DB schema.      |
+| `dbshell`                      | Opens database client shell.                           |
+
+---
+
+## ✅ 4. Static & Media Files
+
+| Command             | Description                          |
+| ------------------- | ------------------------------------ |
+| `collectstatic`     | Copies static files to STATIC\_ROOT. |
+| `findstatic <path>` | Finds location of static file.       |
+
+---
+
+## ✅ 5. Authentication & Users
+
+| Command                 | Description              |
+| ----------------------- | ------------------------ |
+| `createsuperuser`       | Creates a superuser.     |
+| `changepassword <user>` | Changes a user password. |
+
+---
+
+## ✅ 6. Shell and Debugging Tools
+
+| Command        | Description                                                       |
+| -------------- | ----------------------------------------------------------------- |
+| `shell`        | Opens Python shell with Django context.                           |
+| `shell_plus`\* | Enhanced shell with model auto-imports (\*via django-extensions). |
+| `check`        | Checks for project errors.                                        |
+| `diffsettings` | Shows difference from default settings.                           |
+
+---
+
+## ✅ 7. Internationalization (i18n)
+
+| Command           | Description                            |
+| ----------------- | -------------------------------------- |
+| `makemessages`    | Generates .po translation files.       |
+| `compilemessages` | Compiles .po to .mo translation files. |
+
+---
+
+## ✅ 8. Data Import/Export
+
+| Command           | Description                        |
+| ----------------- | ---------------------------------- |
+| `dumpdata`        | Outputs all data as JSON.          |
+| `loaddata <file>` | Loads data from JSON/fixture file. |
+
+---
+
+## ✅ 9. Testing
+
+| Command | Description |
+| ------- | ----------- |
+| `test`  | Runs tests. |
+
+---
+
+## ✨ 10. Third-party Enhanced Commands (Optional Packages)
+
+### From `django-extensions`:
+
+| Command            | Description                                 |
+| ------------------ | ------------------------------------------- |
+| `shell_plus`       | Shell with auto-imported models.            |
+| `show_urls`        | Lists all URL patterns in project.          |
+| `graph_models`     | Generates model relationship diagrams.      |
+| `runjob`           | Runs a scheduled job (cron-style).          |
+| `runprofileserver` | Runs dev server with performance profiling. |
+
+### From Other Packages (e.g. Celery)
+
+| Command  | Description                        |
+| -------- | ---------------------------------- |
+| `celery` | Manages background task workers.   |
+| `flower` | Opens Celery monitoring dashboard. |
+
+---
+
+## ✅ View All Commands
+
+```bash
+python manage.py help
+```
+
+This displays all available core, app-specific, and third-party commands.
+
+---
+
